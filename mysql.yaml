@@ -1,0 +1,40 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mysql
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.7
+        imagePullPolicy: Always
+        name: mysql
+        ports:
+        - containerPort: 3306
+          name: mysql-port
+          protocol: TCP
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "123456"
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: vol1
+      volumes:
+      - hostPath:
+          path: /opt/mysql/db
+          type: DirectoryOrCreate
+        name: vol1

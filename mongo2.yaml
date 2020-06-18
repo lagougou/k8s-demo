@@ -1,0 +1,104 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mongo2
+  name: mongo2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo2
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: mongo2
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - k8s-worker1
+      containers:
+      - args:
+        - mongod
+        - --smallfiles
+        - --dbpath
+        - /data/db
+        # - --keyFile
+        # - /opt/keyfile/mongodb-keyfile
+        - --replSet
+        - bc-repl-set
+        image: 47.101.36.172/evisible/mongo:latest
+        imagePullPolicy: Always
+        name: mongo2
+        ports:
+        - containerPort: 27017
+          name: mongo-port
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /data/db
+          name: vol2
+        - mountPath: /opt/keyfile
+          name: vol1
+      imagePullSecrets:
+      - name: epex-secret
+      initContainers:
+      - args:
+        - if [ "$(ACTION)" == "init" ]; then rm -rf /data/db/*; cp /tmp/mongo/* /opt/keyfile;
+          chmod 400 /opt/keyfile/mongodb-keyfile; chown -R 999 /opt; else echo "pod
+          is restarting"; fi
+        command:
+        - /bin/bash
+        - -c
+        env:
+        - name: ACTION
+          value: restart
+        image: 47.101.36.172/evisible/mongo:latest
+        imagePullPolicy: IfNotPresent
+        name: initkey
+        resources: {}
+        securityContext:
+          capabilities: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /opt/keyfile
+          name: vol1
+        - mountPath: /data/db
+          name: vol2
+        - mountPath: /tmp/mongo
+          name: mongokey
+      nodeSelector:
+        kubernetes.io/hostname: k8s-worker1
+      restartPolicy: Always
+      volumes:
+      - hostPath:
+          path: /opt/mongo-tdp/mongokey
+          type: DirectoryOrCreate
+        name: vol1
+      - hostPath:
+          path: /opt/mongo-tdp/mongodb
+          type: DirectoryOrCreate
+        name: vol2
+      - configMap:
+          defaultMode: 256
+          items:
+          - key: mongodb-keyfile
+            mode: 438
+            path: mongodb-keyfile
+          name: mongodb-keyfile
+          optional: false
+        name: mongokey
