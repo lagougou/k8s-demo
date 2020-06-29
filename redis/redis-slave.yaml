@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: slave
+  name: slave
+  namespace: redis-cluster
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: slave
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: slave
+    spec:
+      containers:
+      - args:
+        - redis-server
+        - /etc/redis/slave.conf
+        image: 47.101.36.172/evisible/redis
+        imagePullPolicy: IfNotPresent
+        name: master
+        ports:
+        - containerPort: 6379
+          name: redis-m-6379
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/redis
+          name: vol1
+      imagePullSecrets:
+      - name: epex-secret
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: redis-cluster
+          optional: false
+        name: vol1
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: slave
+  name: slave
+  namespace: redis-cluster
+spec:
+  type: ClusterIP
+  selector:
+    app: slave
+  ports:
+  - name: redis-m-6379
+    port: 6379
+    targetPort: 6379
