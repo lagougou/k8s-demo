@@ -1,0 +1,287 @@
+#apiVersion: v1
+#kind: Pod
+#metadata:
+#  creationTimestamp: "2020-09-08T07:40:08Z"
+#  generateName: kube-proxy-
+#  labels:
+#    controller-revision-hash: bdc8bbd47
+#    k8s-app: kube-proxy
+#    pod-template-generation: "1"
+#  name: kube-proxy-dr8lh
+#  namespace: kube-system
+#  ownerReferences:
+#  - apiVersion: apps/v1
+#    blockOwnerDeletion: true
+#    controller: true
+#    kind: DaemonSet
+#    name: kube-proxy
+#    uid: 867420d4-e009-48cf-b337-964dd422b221
+#  resourceVersion: "4537"
+#  selfLink: /api/v1/namespaces/kube-system/pods/kube-proxy-dr8lh
+#  uid: 58e0f9ee-d6f4-420a-b94b-ceb64ae75018
+#spec:
+#  affinity:
+#    nodeAffinity:
+#      requiredDuringSchedulingIgnoredDuringExecution:
+#        nodeSelectorTerms:
+#        - matchFields:
+#          - key: metadata.name
+#            operator: In
+#            values:
+#            - k8s-worker1
+#  containers:
+#  - command:
+#    - /usr/local/bin/kube-proxy
+#    - --config=/var/lib/kube-proxy/config.conf
+#    - --hostname-override=$(NODE_NAME)
+#    env:
+#    - name: NODE_NAME
+#      valueFrom:
+#        fieldRef:
+#          apiVersion: v1
+#          fieldPath: spec.nodeName
+#    image: registry.aliyuncs.com/google_containers/kube-proxy:v1.17.0
+#    imagePullPolicy: IfNotPresent
+#    name: kube-proxy
+#    resources: {}
+#    securityContext:
+#      privileged: true
+#    terminationMessagePath: /dev/termination-log
+#    terminationMessagePolicy: File
+#    volumeMounts:
+#    - mountPath: /var/lib/kube-proxy
+#      name: kube-proxy
+#    - mountPath: /run/xtables.lock
+#      name: xtables-lock
+#    - mountPath: /lib/modules
+#      name: lib-modules
+#      readOnly: true
+#    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+#      name: kube-proxy-token-bg9r8
+#      readOnly: true
+#  dnsPolicy: ClusterFirst
+#  enableServiceLinks: true
+#  hostNetwork: true
+#  nodeName: k8s-worker1
+#  nodeSelector:
+#    beta.kubernetes.io/os: linux
+#  priority: 2000001000
+#  priorityClassName: system-node-critical
+#  restartPolicy: Always
+#  schedulerName: default-scheduler
+#  securityContext: {}
+#  serviceAccount: kube-proxy
+#  serviceAccountName: kube-proxy
+#  terminationGracePeriodSeconds: 30
+#  tolerations:
+#  - key: CriticalAddonsOnly
+#    operator: Exists
+#  - operator: Exists
+#  - effect: NoExecute
+#    key: node.kubernetes.io/not-ready
+#    operator: Exists
+#  - effect: NoExecute
+#    key: node.kubernetes.io/unreachable
+#    operator: Exists
+#  - effect: NoSchedule
+#    key: node.kubernetes.io/disk-pressure
+#    operator: Exists
+#  - effect: NoSchedule
+#    key: node.kubernetes.io/memory-pressure
+#    operator: Exists
+#  - effect: NoSchedule
+#    key: node.kubernetes.io/pid-pressure
+#    operator: Exists
+#  - effect: NoSchedule
+#    key: node.kubernetes.io/unschedulable
+#    operator: Exists
+#  - effect: NoSchedule
+#    key: node.kubernetes.io/network-unavailable
+#    operator: Exists
+#  volumes:
+#  - configMap:
+#      defaultMode: 420
+#      name: kube-proxy
+#    name: kube-proxy
+#  - hostPath:
+#      path: /run/xtables.lock
+#      type: FileOrCreate
+#    name: xtables-lock
+#  - hostPath:
+#      path: /lib/modules
+#      type: ""
+#    name: lib-modules
+#  - name: kube-proxy-token-bg9r8
+#    secret:
+#      defaultMode: 420
+#      secretName: kube-proxy-token-bg9r8
+#status:
+#  conditions:
+#  - lastProbeTime: null
+#    lastTransitionTime: "2020-09-08T07:40:07Z"
+#    status: "True"
+#    type: Initialized
+#  - lastProbeTime: null
+#    lastTransitionTime: "2020-09-08T07:40:08Z"
+#    status: "True"
+#    type: Ready
+#  - lastProbeTime: null
+#    lastTransitionTime: "2020-09-08T07:40:08Z"
+#    status: "True"
+#    type: ContainersReady
+#  - lastProbeTime: null
+#    lastTransitionTime: "2020-09-08T07:40:08Z"
+#    status: "True"
+#    type: PodScheduled
+#  containerStatuses:
+#  - containerID: docker://8618c434ea0a209c9f7ac45317390c483ba9fd3c6ef75958690585212c047fd4
+#    image: registry.aliyuncs.com/google_containers/kube-proxy:v1.17.0
+#    imageID: docker-pullable://registry.aliyuncs.com/google_containers/kube-proxy@sha256:f9b0600edc6798b69e973b719c5b47f5bc62c7a539a296a3e1c921bf14c2c7ac
+#    lastState: {}
+#    name: kube-proxy
+#    ready: true
+#    restartCount: 0
+#    started: true
+#    state:
+#      running:
+#        startedAt: "2020-09-08T07:40:08Z"
+#  hostIP: 192.168.18.17
+#  phase: Running
+#  podIP: 192.168.18.17
+#  podIPs:
+#  - ip: 192.168.18.17
+#  qosClass: BestEffort
+#  startTime: "2020-09-08T07:40:07Z"
+#apiVersion: v1
+#kind: Pod
+#metadata:
+#  annotations:
+#    kubernetes.io/config.hash: eb0c62892de0c481c800640b4c18fcd7
+#    kubernetes.io/config.mirror: eb0c62892de0c481c800640b4c18fcd7
+#    kubernetes.io/config.seen: "2020-09-08T15:12:37.732057412+08:00"
+#    kubernetes.io/config.source: file
+#  creationTimestamp: "2020-09-08T07:12:58Z"
+#  labels:
+#    component: kube-controller-manager
+#    tier: control-plane
+#  name: kube-controller-manager-k8s-master
+#  namespace: kube-system
+#  ownerReferences:
+#  - apiVersion: v1
+#    controller: true
+#    kind: Node
+#    name: k8s-master
+#    uid: ab86e565-8a8a-408e-a72e-5d920280b36e
+#  resourceVersion: "383"
+#  selfLink: /api/v1/namespaces/kube-system/pods/kube-controller-manager-k8s-master
+#  uid: f0e4225c-b658-4dc7-97fe-08dc09607908
+#spec:
+#  containers:
+#  - command:
+#    - kube-controller-manager
+#    - --allocate-node-cidrs=true
+#    - --authentication-kubeconfig=/etc/kubernetes/controller-manager.conf
+#    - --authorization-kubeconfig=/etc/kubernetes/controller-manager.conf
+#    - --bind-address=127.0.0.1
+#    - --client-ca-file=/etc/kubernetes/pki/ca.crt
+#    - --cluster-cidr=10.244.0.0/16
+#    - --cluster-signing-cert-file=/etc/kubernetes/pki/ca.crt
+#    - --cluster-signing-key-file=/etc/kubernetes/pki/ca.key
+#    - --controllers=*,bootstrapsigner,tokencleaner
+#    - --kubeconfig=/etc/kubernetes/controller-manager.conf
+#    - --leader-elect=true
+#    - --node-cidr-mask-size=24
+#    - --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt
+#    - --root-ca-file=/etc/kubernetes/pki/ca.crt
+#    - --service-account-private-key-file=/etc/kubernetes/pki/sa.key
+#    - --service-cluster-ip-range=10.96.0.0/12
+#    - --use-service-account-credentials=true
+#    image: registry.aliyuncs.com/google_containers/kube-controller-manager:v1.17.0
+#    imagePullPolicy: IfNotPresent
+#    livenessProbe:
+#      failureThreshold: 8
+#      httpGet:
+#        host: 127.0.0.1
+#        path: /healthz
+#        port: 10257
+#        scheme: HTTPS
+#      initialDelaySeconds: 15
+#      periodSeconds: 10
+#      successThreshold: 1
+#      timeoutSeconds: 15
+#    name: kube-controller-manager
+#    resources:
+#      requests:
+#        cpu: 200m
+#    terminationMessagePath: /dev/termination-log
+#    terminationMessagePolicy: File
+#    volumeMounts:
+#    - mountPath: /etc/ssl/certs
+#      name: ca-certs
+#      readOnly: true
+#    - mountPath: /etc/pki
+#      name: etc-pki
+#      readOnly: true
+#    - mountPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
+#      name: flexvolume-dir
+#    - mountPath: /etc/kubernetes/pki
+#      name: k8s-certs
+#      readOnly: true
+#    - mountPath: /etc/kubernetes/controller-manager.conf
+#      name: kubeconfig
+#      readOnly: true
+#  dnsPolicy: ClusterFirst
+#  enableServiceLinks: true
+#  hostNetwork: true
+#  nodeName: k8s-master
+#  priority: 2000000000
+#  priorityClassName: system-cluster-critical
+#  restartPolicy: Always
+#  schedulerName: default-scheduler
+#  securityContext: {}
+#  terminationGracePeriodSeconds: 30
+#  tolerations:
+#  - effect: NoExecute
+#    operator: Exists
+#  volumes:
+#  - hostPath:
+#      path: /etc/ssl/certs
+#      type: DirectoryOrCreate
+#    name: ca-certs
+#  - hostPath:
+#      path: /etc/pki
+#      type: DirectoryOrCreate
+#    name: etc-pki
+#  - hostPath:
+#      path: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
+#      type: DirectoryOrCreate
+#    name: flexvolume-dir
+#  - hostPath:
+#      path: /etc/kubernetes/pki
+#      type: DirectoryOrCreate
+#    name: k8s-certs
+#  - hostPath:
+#      path: /etc/kubernetes/controller-manager.conf
+#      type: FileOrCreate
+#    name: kubeconfig
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/port: "32108"
+    prometheus.io/scrape: "true"
+  labels:
+    k8s-app: kube-proxy
+  name: kube-proxy
+  namespace: kube-system
+spec:
+  CluserIP:
+  ports:
+  - name: metrics
+    port: 10249
+    protocol: TCP
+    targetPort: 10249
+    nodePort: 32108
+  selector:
+    k8s-app: kube-proxy
+  type: NodePort

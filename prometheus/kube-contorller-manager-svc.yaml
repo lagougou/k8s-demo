@@ -1,0 +1,135 @@
+#apiVersion: v1
+#kind: Pod
+#metadata:
+#  annotations:
+#    kubernetes.io/config.hash: eb0c62892de0c481c800640b4c18fcd7
+#    kubernetes.io/config.mirror: eb0c62892de0c481c800640b4c18fcd7
+#    kubernetes.io/config.seen: "2020-09-08T15:12:37.732057412+08:00"
+#    kubernetes.io/config.source: file
+#  creationTimestamp: "2020-09-08T07:12:58Z"
+#  labels:
+#    component: kube-controller-manager
+#    tier: control-plane
+#  name: kube-controller-manager-k8s-master
+#  namespace: kube-system
+#  ownerReferences:
+#  - apiVersion: v1
+#    controller: true
+#    kind: Node
+#    name: k8s-master
+#    uid: ab86e565-8a8a-408e-a72e-5d920280b36e
+#  resourceVersion: "383"
+#  selfLink: /api/v1/namespaces/kube-system/pods/kube-controller-manager-k8s-master
+#  uid: f0e4225c-b658-4dc7-97fe-08dc09607908
+#spec:
+#  containers:
+#  - command:
+#    - kube-controller-manager
+#    - --allocate-node-cidrs=true
+#    - --authentication-kubeconfig=/etc/kubernetes/controller-manager.conf
+#    - --authorization-kubeconfig=/etc/kubernetes/controller-manager.conf
+#    - --bind-address=127.0.0.1
+#    - --client-ca-file=/etc/kubernetes/pki/ca.crt
+#    - --cluster-cidr=10.244.0.0/16
+#    - --cluster-signing-cert-file=/etc/kubernetes/pki/ca.crt
+#    - --cluster-signing-key-file=/etc/kubernetes/pki/ca.key
+#    - --controllers=*,bootstrapsigner,tokencleaner
+#    - --kubeconfig=/etc/kubernetes/controller-manager.conf
+#    - --leader-elect=true
+#    - --node-cidr-mask-size=24
+#    - --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt
+#    - --root-ca-file=/etc/kubernetes/pki/ca.crt
+#    - --service-account-private-key-file=/etc/kubernetes/pki/sa.key
+#    - --service-cluster-ip-range=10.96.0.0/12
+#    - --use-service-account-credentials=true
+#    image: registry.aliyuncs.com/google_containers/kube-controller-manager:v1.17.0
+#    imagePullPolicy: IfNotPresent
+#    livenessProbe:
+#      failureThreshold: 8
+#      httpGet:
+#        host: 127.0.0.1
+#        path: /healthz
+#        port: 10257
+#        scheme: HTTPS
+#      initialDelaySeconds: 15
+#      periodSeconds: 10
+#      successThreshold: 1
+#      timeoutSeconds: 15
+#    name: kube-controller-manager
+#    resources:
+#      requests:
+#        cpu: 200m
+#    terminationMessagePath: /dev/termination-log
+#    terminationMessagePolicy: File
+#    volumeMounts:
+#    - mountPath: /etc/ssl/certs
+#      name: ca-certs
+#      readOnly: true
+#    - mountPath: /etc/pki
+#      name: etc-pki
+#      readOnly: true
+#    - mountPath: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
+#      name: flexvolume-dir
+#    - mountPath: /etc/kubernetes/pki
+#      name: k8s-certs
+#      readOnly: true
+#    - mountPath: /etc/kubernetes/controller-manager.conf
+#      name: kubeconfig
+#      readOnly: true
+#  dnsPolicy: ClusterFirst
+#  enableServiceLinks: true
+#  hostNetwork: true
+#  nodeName: k8s-master
+#  priority: 2000000000
+#  priorityClassName: system-cluster-critical
+#  restartPolicy: Always
+#  schedulerName: default-scheduler
+#  securityContext: {}
+#  terminationGracePeriodSeconds: 30
+#  tolerations:
+#  - effect: NoExecute
+#    operator: Exists
+#  volumes:
+#  - hostPath:
+#      path: /etc/ssl/certs
+#      type: DirectoryOrCreate
+#    name: ca-certs
+#  - hostPath:
+#      path: /etc/pki
+#      type: DirectoryOrCreate
+#    name: etc-pki
+#  - hostPath:
+#      path: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
+#      type: DirectoryOrCreate
+#    name: flexvolume-dir
+#  - hostPath:
+#      path: /etc/kubernetes/pki
+#      type: DirectoryOrCreate
+#    name: k8s-certs
+#  - hostPath:
+#      path: /etc/kubernetes/controller-manager.conf
+#      type: FileOrCreate
+#    name: kubeconfig
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/port: "32105"
+    prometheus.io/scrape: "true"
+  labels:
+    component: kube-controller-manager
+    tier: control-plane
+  name: kube-controller-manager
+  namespace: kube-system
+spec:
+  CluserIP:
+  ports:
+  - name: metrics
+    port: 10252
+    protocol: TCP
+    targetPort: 10252
+    nodePort: 32105
+  selector:
+    component: kube-controller-manager
+    tier: control-plane
+  type: NodePort

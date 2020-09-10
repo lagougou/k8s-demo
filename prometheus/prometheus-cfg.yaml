@@ -78,3 +78,12 @@ data:
       - source_labels: [__meta_kubernetes_service_name]
         action: replace
         target_label: kubernetes_name 
+    - job_name: 'k8s-etcd'
+      scheme: https
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/k8s-certs/etcd/ca.crt
+        cert_file: /var/run/secrets/kubernetes.io/k8s-certs/etcd/server.crt
+        key_file: /var/run/secrets/kubernetes.io/k8s-certs/etcd/server.key
+      scrape_interval: 5s
+      static_configs:
+      - targets: ['192.168.18.15:2379'] 
