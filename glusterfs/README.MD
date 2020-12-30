@@ -22,15 +22,14 @@
 
 ## Hekeit服务设置（在heketi节点上)
 ### 下载heketi二进制文件
-'''
 
+'''
 {
   	cd /tmp
   	wget https://github.com/heketi/heketi/releases/download/v10.1.0/heketi-v10.1.0.linux.amd64.tar.gz
   	tar zxf heketi*
   	mv heketi/{heketi,heketi-cli} /usr/local/bin/
 }
-
 '''
 
 ### 设置heketi专用账号
