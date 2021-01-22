@@ -54,7 +54,7 @@
 ```
 cp /tmp/heketi/heketi.json /etc/heketi/
 ```
-Edit **/etc/heketi/heketi.json**, change executor to ssh and update sshexec options as shown below
+### 修改 **/etc/heketi/heketi.json**, 更改执行模式为ssh,修改sshexec模块配置如下所示
 ```
 	"executor": "ssh", 
 
@@ -102,21 +102,32 @@ curl localhost:8080/hello; echo
 export HEKETI_CLI_USER=admin
 export HEKETI_CLI_KEY=secretpassword
 ```
-### 使用heketi-cli 创建jiqun
+### 修改 **/etc/heketi/heketi.json** 用户名和密码与上面一致，使用hekeli_cli命令需要认证
+```
+"_jwt": "Private keys for access",
+  "jwt": {
+    "_admin": "Admin has access to all APIs",
+    "admin": {
+      "key": "secretpassword"
+    },
+
+```
+### 使用heketi-cli 创建集群
 ```
 	heketi-cli cluster create
 ```
 
 ### 添加节点到集群
 ```
-heketi-cli node add --zone 1 --cluster e358bbfd4bae42ec06988c22158d6e31  --management-host-name osd1 --storage-host-name 172.16.16.201
+heketi-cli node add --zone 1 --cluster e358bbfd4bae42ec06988c22158d6e31  --management-host-name gulsterfs-1 --storage-host-name 172.16.16.201
 ```
 
 ```
-heketi-cli node add --zone 2 --cluster e358bbfd4bae42ec06988c22158d6e31  --management-host-name osd2 --storage-host-name 172.16.16.202
+heketi-cli node add --zone 2 --cluster e358bbfd4bae42ec06988c22158d6e31  --management-host-name glusterfs-2 --storage-host-name 172.16.16.202
 ```
 ###  为节点添加存储盘
 ```
-heketi-cli device add --name /dev/sdc --node 节点id
+heketi-cli device add --name /dev/sdc --node 节点1id
+heketi-cli device add --name /dev/sdc --node 节点2id
 ```
 
